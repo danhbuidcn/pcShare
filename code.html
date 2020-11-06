@@ -1,0 +1,147 @@
+<html>
+
+<head>
+    <title>Choose door</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <style>
+        body {
+            background-color: #010165;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        #logo {
+            text-align: center;
+            background-color: aqua;
+        }
+        
+        #logo {
+            color: azure;
+            margin: 0 auto;
+        }
+        
+        h2,
+        h3 {
+            text-align: center;
+            color: white;
+        }
+        
+        .img_display {
+            display: flex;
+            justify-content: center;
+            color: white;
+        }
+        
+        .img_item {
+            flex-grow: 1 1;
+            margin: 0 20px;
+            text-align: center;
+        }
+        
+        #msg {
+            color: white;
+            background-color: none;
+            text-align: center;
+            font-size: 2em;
+        }
+        
+        .total {
+            color: white;
+            font-size: 1.5em;
+            font-weight: 700;
+            padding: 20px;
+        }
+        
+        .point {
+            padding: 10px 20px;
+            font-size: 2em;
+            font-weight: 700;
+            color: black;
+            background-color: teal;
+        }
+    </style>
+</head>
+
+<body>
+    <p id="logo"> <img src="images/logo.svg" id="logo" width="200px"></p>
+    <h2>*Intruction*</h2>
+    <h3>1</h3>
+    <h3>2</h3>
+    <h3>3</h3>
+    <h3>4</h3>
+    <div>
+        <div class="img_display">
+            <div class="img_item item_click"><img src="images/closed_door.svg"></div>
+            <div class="img_item item_click"><img src="images/closed_door.svg"></div>
+            <div class="img_item item_click"><img src="images/closed_door.svg"></div>
+        </div>
+        <p id="msg">Play!</p>
+        <div class="img_display">
+            <div class="img_item">
+                <span class="total">Current steak:</span><br><br>
+                <span class="point Current">0</span>
+            </div>
+            <div class="img_item">
+                <span class="total">Best steak</span><br><br>
+                <span class="point Best">0</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        $img1 = "<img src='images/robot.svg'>";
+        $img2 = "<img src='images/beach.svg'>";
+        $img3 = "<img src='images/space.svg'>";
+        $cur = 0, $bes = 0;
+        $number = new Array();
+        $e = 0;
+        $(".item_click").click(function() {
+            $number[$e] = CheckRandom($number[$e], $e); //lấy radom 
+            $number[$e] == 1 ? $node = $img1 : $number[$e] == 2 ? $node = $img2 : $node = $img3;
+            $(this).html($node);
+            console.log("lần " + $e);
+            Point($e);
+            $e++;
+            $e == 3 ? $e = 0 : $e;
+        });
+        $("#msg").click(function() {
+            $node = '<img src="images/closed_door.svg">';
+            $e = 0;
+            $(".item_click").html($node);
+            $("#msg").html("Play!");
+
+        });
+
+        function Point($e) {
+            if ($e == 0 && $number[$e] == 1) {
+                $cur++;
+                $("#msg").html("You Lose ! Play again ");
+            } else if ($e == 1 && $number[$e] == 1) {
+                $cur++;
+                $("#msg").html("You Lose ! Play again ");
+            } else if ($number[1] != 1 && $number[0] != 1 && $e >= 1) {
+                $bes++;
+                $("#msg").html("You win ! Play again ");
+            } else if ($e == 2 && $number[$e] == 1) {
+                $bes++;
+                $("#msg").html("You win ! Play again ");
+            }
+            console.log($cur);
+            $(".Current").html($cur);
+            $(".Best").html($bes);
+        }
+
+        function CheckRandom($num, $e) { // kiểm tra giá trị trùng lặp
+            $number[$e] = Math.round(Math.random() * (3 - 1) + 1);
+            count = 0;
+            for ($i = 0; $i < $e; $i++) {
+                if ($number[$e] == $number[$i]) { // nếu number[e] bị trùng với 1 số trước đó thì tăng count và thay đổi random
+                    count++;
+                }
+            }
+            if (count > 0) return CheckRandom($num, $e); // nếu count>0 thì gọi lại hàm
+            else return $number[$e];
+        }
+    </script>
+</body>
+
+</html>
